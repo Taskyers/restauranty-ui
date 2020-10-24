@@ -9,7 +9,8 @@ module.exports = {
                     '^/api': ''
                 }
             }
-        }
+        },
+        historyApiFallback: true,
     },
     output: {
         path: __dirname + '/public',

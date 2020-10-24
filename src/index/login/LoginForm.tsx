@@ -63,7 +63,7 @@ export default class LoginForm extends React.Component<any, any> {
                             Log in
                         </Button>
                     </Form>
-                    <span><a href="#" className="btn-forgot-password">Forgot password?</a></span>
+                    <span><a href={ "/recovery" } className="btn-forgot-password">Forgot password?</a></span>
                 </div>
                 { this.state.error &&
                 <SweetAlert error title="Login failed" confirmBtnBsStyle={ 'info' } timeout={ 2000 }
