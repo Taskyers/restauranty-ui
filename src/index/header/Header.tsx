@@ -5,6 +5,8 @@ import './Header.less';
 export default () =>
     <Nav className="justify-content-center main-header">
         <Nav.Item>
-            <h2>Restauranty</h2>
+            <Nav.Link href="/">
+                <h2>Restauranty</h2>
+            </Nav.Link>
         </Nav.Item>
     </Nav>
