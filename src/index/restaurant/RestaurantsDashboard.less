@@ -1,0 +1,84 @@
+.table {
+  background-color: #fdfcfc;
+
+  > tbody {
+    > tr {
+      > td {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+thead {
+  th {
+    font-size: 18px;
+    color: #fa4251;
+    line-height: 1.4;
+  }
+
+  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+tbody {
+  td {
+    font-family: Lato-Regular;
+    font-size: 18px;
+    color: #5f5e5e;
+    line-height: 1.4;
+  }
+}
+
+.restaurantTable {
+  box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+}
+
+&::-webkit-scrollbar {
+  width: 12px;
+}
+
+&::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 1);
+  border-radius: 10px;
+}
+
+&::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #fff;
+  -webkit-box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.7);
+}
+
+.tableFixHead {
+  border-radius: 10px;
+  overflow-y: auto;
+  max-height: 576px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+}
+
+table {
+  width: 100%;
+}
+
+th, td {
+  padding: 8px 16px;
+}
+
+th {
+  background: #eee;
+}
+
+.form-text{
+  color: red;
+}

@@ -7,10 +7,11 @@ import {
     emailValidation,
     usernameValidation,
     passwordValidation,
-    confirmPasswordValidation, validateForm
+    confirmPasswordValidation
 } from "../../utils/validation/registration/RegistrationValidator";
 import axios from "axios";
 import SweetAlert from "react-bootstrap-sweetalert";
+import {validateForm} from "../../utils/validation/shared/SharedValidation";
 
 
 export default class RegistrationForm extends React.Component<any, any> {
