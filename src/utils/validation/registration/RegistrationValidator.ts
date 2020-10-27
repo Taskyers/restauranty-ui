@@ -51,12 +51,3 @@ export const confirmPasswordValidation = (confirmPassword: string, password: str
     }
     return 'Please enter a valid confirm password';
 };
-
-
-export const validateForm = (errors: any[]) => {
-    let valid = true;
-    Object.values(errors).forEach(
-        error => error != null && (valid = false)
-    );
-    return valid;
-}

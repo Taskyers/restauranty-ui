@@ -4,10 +4,11 @@ import axios from "axios";
 import { Form, Col, Row, Button } from "react-bootstrap";
 import {
     passwordValidation,
-    confirmPasswordValidation, validateForm
+    confirmPasswordValidation
 } from "../../utils/validation/registration/RegistrationValidator";
 import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
+import {validateForm} from "../../utils/validation/shared/SharedValidation";
 
 export default class ChangePasswordForm extends React.Component<any, any> {
     constructor(props: any) {
