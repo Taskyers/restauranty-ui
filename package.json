@@ -21,6 +21,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "sweetalert2": "^10.9.0",
     "ts-loader": "^8.0.2",
     "typescript": "^3.8.0",
     "webpack": "^4.44.1",

@@ -67,3 +67,10 @@ export const restaurantPhoneNumberValidation = (zipCode: string) => {
 
     return 'Please enter a valid phone number';
 };
+
+export const restaurantTagsValidation = (tags: string) => {
+    if ( /^([a-z]+[,]?)*(?<![,])$/.test(tags) ) {
+        return null;
+    }
+    return 'Please enter valid tags';
+}

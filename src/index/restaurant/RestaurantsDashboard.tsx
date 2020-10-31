@@ -7,7 +7,7 @@ import {Button, Col, Form, FormControl, FormGroup, Modal} from "react-bootstrap"
 import {
     restaurantCityCountryValidation,
     restaurantNameValidation, restaurantPhoneNumberValidation,
-    restaurantStreetValidation, restaurantZipCodeValidation
+    restaurantStreetValidation, restaurantTagsValidation, restaurantZipCodeValidation
 } from "../../utils/validation/restaurant/RestaurantValidator";
 import {validateEditForm, validateForm} from "../../utils/validation/shared/SharedValidation";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -25,6 +25,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             country: '',
             zipCode: '',
             phoneNumber: '',
+            tags: '',
             show: false,
             errors: {
                 restaurantName: '',
@@ -32,7 +33,8 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 city: '',
                 country: '',
                 zipCode: '',
-                phoneNumber: ''
+                phoneNumber: '',
+                tags: '',
             },
             isFormValid: false,
             success: false,
@@ -64,6 +66,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             country: recordToEdit.address.country,
             zipCode: recordToEdit.address.zipCode,
             phoneNumber: recordToEdit.phoneNumber,
+            tags: recordToEdit.tags,
             isFormValid: true
         });
     }
@@ -78,13 +81,15 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             country: '',
             zipCode: '',
             phoneNumber: '',
+            tags: '',
             errors: {
                 restaurantName: '',
                 street: '',
                 city: '',
                 country: '',
                 zipCode: '',
-                phoneNumber: ''
+                phoneNumber: '',
+                tags: ''
             },
             isFormValid: false,
             isEdit: false
@@ -145,6 +150,9 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                     })
                 }
                 break;
+            case 'tags':
+                errors.tags = restaurantTagsValidation(value);
+                break;
             default:
                 break;
         }
@@ -168,13 +176,15 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 zipCode: this.state.zipCode,
             },
             phoneNumber: this.state.phoneNumber,
+            tags: this.state.tags.split(',')
         };
 
         if (formItem.id) {
             axios.put(`/api/restaurant/${formItem.id}`, {
                 'name': formItem.name,
                 'address': formItem.address,
-                'phoneNumber': formItem.phoneNumber
+                'phoneNumber': formItem.phoneNumber,
+                'tags': formItem.tags === '' ? null : formItem.tags
             }).then(res => {
                 this.setState({...this.state, success: true, message: res.data.message})
                 this.setState((prevState: { restaurants: any[]; }) => ({
@@ -193,7 +203,8 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             axios.post('/api/restaurant', {
                 'name': formItem.name,
                 'address': formItem.address,
-                'phoneNumber': formItem.phoneNumber
+                'phoneNumber': formItem.phoneNumber,
+                'tags': formItem.tags === '' ? null : formItem.tags
             }).then(res => {
                 this.setState({...this.state, success: true, message: res.data.message})
                 this.setState((prevState: { restaurants: any[]; }) => ({
@@ -279,6 +290,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     <th scope="col">Country</th>
                                     <th scope="col">Zip code</th>
                                     <th scope="col">Phone number</th>
+                                    <th scope="col">Tags</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -292,6 +304,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                             <td>{restaurant.address.country}</td>
                                             <td>{restaurant.address.zipCode}</td>
                                             <td>{restaurant.phoneNumber}</td>
+                                            <td>{restaurant.tags.join(',')}</td>
                                             <td>
                                                 <button className="btn btn-dark mr-3"
                                                         onClick={(e) => this.showEditModal(e, restaurant)}>
@@ -320,7 +333,6 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                     </div>
                 </div>
                 <Modal
-                    /*{...this.props}*/
                     show={this.state.show}
                     onHide={this.hideModal}
                     dialogClassName="custom-modal"
@@ -413,8 +425,14 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     />
                                 </Col>
                             </FormGroup>
-
-
+                            <FormGroup>
+                                <Col>
+                                    <Form.Label>Tags</Form.Label>
+                                    <Form.Text>{ errors.tags }</Form.Text>
+                                    <FormControl type="Text" placeholder="Tags" name="tags"
+                                                 value={ this.state.tags } onChange={ this.handleInputChange }/>
+                                </Col>
+                            </FormGroup>
                             <FormGroup>
                                 <Col sm={4}>
                                     <Button type="submit" disabled={!isFormValid}>
