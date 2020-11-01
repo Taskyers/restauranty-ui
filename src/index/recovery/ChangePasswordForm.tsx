@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../header/Header";
 import axios from "axios";
 import { Form, Col, Row, Button } from "react-bootstrap";
 import {
@@ -63,7 +62,6 @@ export default class ChangePasswordForm extends React.Component<any, any> {
     render() {
         return (
             <>
-                <Header/>
                 <Row>
                     <Col>
                         <div className="index-form">
