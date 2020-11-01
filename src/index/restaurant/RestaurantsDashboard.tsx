@@ -1,6 +1,5 @@
 import React from "react";
 import './RestaurantsDashboard.less';
-import Header from "../header/Header";
 import axios from "axios";
 import Swal, {SweetAlertOptions} from 'sweetalert2';
 import {Button, Col, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
@@ -277,7 +276,6 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
         const {isFormValid, errors} = this.state;
         return (
             <>
-                <Header/>
                 <div className="row mb-1">
                     <div className="col-md-9 mb-0">
                         <div className="tableFixHead">
@@ -291,6 +289,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     <th scope="col">Zip code</th>
                                     <th scope="col">Phone number</th>
                                     <th scope="col">Tags</th>
+                                    <th scope="col"/>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -305,6 +304,9 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                             <td>{restaurant.address.zipCode}</td>
                                             <td>{restaurant.phoneNumber}</td>
                                             <td>{restaurant.tags.join(',')}</td>
+                                            <td><a href={ `/restaurant/images/${ restaurant.name }` }>
+                                                <button className="btn btn-primary">Photos</button>
+                                            </a></td>
                                             <td>
                                                 <button className="btn btn-dark mr-3"
                                                         onClick={(e) => this.showEditModal(e, restaurant)}>
