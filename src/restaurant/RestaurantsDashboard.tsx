@@ -1,15 +1,15 @@
 import React from "react";
 import './RestaurantsDashboard.less';
 import axios from "axios";
-import Swal, {SweetAlertOptions} from 'sweetalert2';
 import {Button, Col, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
 import {
     restaurantCityCountryValidation,
     restaurantNameValidation, restaurantPhoneNumberValidation,
     restaurantStreetValidation, restaurantTagsValidation, restaurantZipCodeValidation
-} from "../../utils/validation/restaurant/RestaurantValidator";
-import {validateEditForm, validateForm} from "../../utils/validation/shared/SharedValidation";
+} from "../utils/validation/restaurant/RestaurantValidator";
+import {validateEditForm, validateForm} from "../utils/validation/shared/SharedValidation";
 import SweetAlert from "react-bootstrap-sweetalert";
+import DeleteAlert from "../utils/swal/DeleteAlert";
 
 export default class RestaurantsDashboard extends React.Component<any, any> {
 
@@ -247,15 +247,8 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
     }
 
     deleteRestaurant(restaurantId: number) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You won\'t be able to revert this!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        } as SweetAlertOptions).then((result: any) => {
+        const alert = DeleteAlert.getDeleteAlert();
+        alert.then((result: any) => {
             if (result.value) {
                 axios.delete(`/api/restaurant/${restaurantId}`)
                     .then(res => {
