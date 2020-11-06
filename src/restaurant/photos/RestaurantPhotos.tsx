@@ -5,9 +5,9 @@ import { RestaurantPhoto } from "./RestaurantPhoto";
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view';
 import 'react-photo-view/dist/index.css';
 import SweetAlert from "react-bootstrap-sweetalert";
-import Swal, { SweetAlertOptions } from "sweetalert2";
-import ResponseMessage from "../../../ResponseMessage";
+import ResponseMessage from "../../ResponseMessage";
 import { Button, Col, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
+import DeleteAlert from "../../utils/swal/DeleteAlert";
 
 export default class RestaurantPhotos extends React.Component<any, any> {
 
@@ -47,15 +47,8 @@ export default class RestaurantPhotos extends React.Component<any, any> {
     }
 
     deleteImage(name: string) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You won\'t be able to revert this!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        } as SweetAlertOptions).then((result: any) => {
+        const alert = DeleteAlert.getDeleteAlert();
+        alert.then((result: any) => {
             if ( result.value ) {
                 axios.delete<ResponseMessage<string>>(`/api/restaurant/images/${ name }`)
                      .then(result => {

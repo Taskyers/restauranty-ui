@@ -3,8 +3,10 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import Index from "./index";
 import SendEmailForm from "./index/recovery/SendEmailForm";
 import ChangePasswordForm from "./index/recovery/ChangePasswordForm";
-import RestaurantsDashboard from "./index/restaurant/RestaurantsDashboard";
-import RestaurantPhotos from "./index/restaurant/photos/RestaurantPhotos";
+import RestaurantsDashboard from "./restaurant/RestaurantsDashboard";
+import RestaurantPhotos from "./restaurant/photos/RestaurantPhotos";
+import ClientIndex from "./client/index/ClientIndex";
+import ClientReview from "./client/reviews/ClientReview";
 
 export default class Router extends React.Component<any, any> {
     render() {
@@ -17,7 +19,9 @@ export default class Router extends React.Component<any, any> {
                 <Route exact path='/restaurant' component={ RestaurantsDashboard }/>
                 <Route exact path='/restaurant/images/:restaurantName'
                        render={ ({ match }) => <RestaurantPhotos restaurantName={ match.params.restaurantName }/> }/>
-                <Route exact path='/client'/>
+                <Route exact path='/client' component={ ClientIndex }/>
+                <Route exact path='/client/reviews/:restaurantName'
+                       render={ ({ match }) => <ClientReview restaurantName={ match.params.restaurantName }/> }/>
             </BrowserRouter>
         );
     }
