@@ -1,15 +1,15 @@
 import React from "react";
 import './RestaurantsDashboard.less';
 import axios from "axios";
-import {Button, Col, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
+import { Button, Col, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
 import {
     restaurantCityCountryValidation,
     restaurantNameValidation, restaurantPhoneNumberValidation,
     restaurantStreetValidation, restaurantTagsValidation, restaurantZipCodeValidation
 } from "../utils/validation/restaurant/RestaurantValidator";
-import {validateEditForm, validateForm} from "../utils/validation/shared/SharedValidation";
+import { validateEditForm, validateForm } from "../utils/validation/shared/SharedValidation";
 import SweetAlert from "react-bootstrap-sweetalert";
-import DeleteAlert from "../utils/swal/DeleteAlert";
+import DangerAlert from "../utils/swal/DangerAlert";
 
 export default class RestaurantsDashboard extends React.Component<any, any> {
 
@@ -50,7 +50,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
     }
 
     showModal() {
-        this.setState({show: true});
+        this.setState({ show: true });
     }
 
     showEditModal(event: any, restaurant: any) {
@@ -96,27 +96,27 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
     }
 
     handleInputChange(event: { target: { name: any; value: any; }; }) {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
         this.setState({
             name, value
         });
         let errors = this.state.errors;
 
-        switch (name) {
+        switch ( name ) {
             case 'restaurantName':
                 errors.restaurantName = restaurantNameValidation(value)
-                if(!this.state.restaurantId){
-                    axios.get(`/api/restaurant/checkByName/${value}`)
-                        .then((res) => {
-                            if (res.data === true) {
-                                this.setState({
-                                    ...this.state,
-                                    errors: {...this.state.errors, restaurantName: "Name is already taken"}
-                                })
-                            } else {
-                                errors.restaurantName = null;
-                            }
-                        }).catch(() => {
+                if ( !this.state.restaurantId ) {
+                    axios.get(`/api/restaurant/checkByName/${ value }`)
+                         .then((res) => {
+                             if ( res.data === true ) {
+                                 this.setState({
+                                     ...this.state,
+                                     errors: { ...this.state.errors, restaurantName: "Name is already taken" }
+                                 })
+                             } else {
+                                 errors.restaurantName = null;
+                             }
+                         }).catch(() => {
                     })
                 }
                 break;
@@ -134,18 +134,18 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 break;
             case 'phoneNumber':
                 errors.phoneNumber = restaurantPhoneNumberValidation(value)
-                if(!this.state.restaurantId && value !=='' ){
-                    axios.get(`/api/restaurant/checkByPhone/${value}`)
-                        .then((res) => {
-                            if (res.data === true) {
-                                this.setState({
-                                    ...this.state,
-                                    errors: {...this.state.errors, phoneNumber: "Phone number is already taken"}
-                                })
-                            } else {
-                                errors.phoneNumber = null;
-                            }
-                        }).catch(() => {
+                if ( !this.state.restaurantId && value !== '' ) {
+                    axios.get(`/api/restaurant/checkByPhone/${ value }`)
+                         .then((res) => {
+                             if ( res.data === true ) {
+                                 this.setState({
+                                     ...this.state,
+                                     errors: { ...this.state.errors, phoneNumber: "Phone number is already taken" }
+                                 })
+                             } else {
+                                 errors.phoneNumber = null;
+                             }
+                         }).catch(() => {
                     })
                 }
                 break;
@@ -156,11 +156,11 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 break;
         }
 
-        this.setState({errors, [name]: value});
-        if (this.state.restaurantId) {
-            this.setState({isFormValid: !validateEditForm(this.state.errors)})
+        this.setState({ errors, [name]: value });
+        if ( this.state.restaurantId ) {
+            this.setState({ isFormValid: !validateEditForm(this.state.errors) })
         } else {
-            this.setState({isFormValid: validateForm(this.state.errors)})
+            this.setState({ isFormValid: validateForm(this.state.errors) })
         }
     }
 
@@ -178,24 +178,25 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             tags: this.state.tags.split(',')
         };
 
-        if (formItem.id) {
-            axios.put(`/api/restaurant/${formItem.id}`, {
+        if ( formItem.id ) {
+            axios.put(`/api/restaurant/${ formItem.id }`, {
                 'name': formItem.name,
                 'address': formItem.address,
                 'phoneNumber': formItem.phoneNumber,
                 'tags': formItem.tags === '' ? null : formItem.tags
             }).then(res => {
-                this.setState({...this.state, success: true, message: res.data.message})
+                this.setState({ ...this.state, success: true, message: res.data.message })
                 this.setState((prevState: { restaurants: any[]; }) => ({
                     restaurants: prevState.restaurants.map(item => {
-                        if (item.id === formItem.id)
+                        if ( item.id === formItem.id ) {
                             return formItem;
-                        else
+                        } else {
                             return item;
+                        }
                     })
                 }));
             }).catch(reason => {
-                this.setState({...this.state, failure: true, message: reason.message})
+                this.setState({ ...this.state, failure: true, message: reason.message })
             });
 
         } else {
@@ -205,12 +206,12 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 'phoneNumber': formItem.phoneNumber,
                 'tags': formItem.tags === '' ? null : formItem.tags
             }).then(res => {
-                this.setState({...this.state, success: true, message: res.data.message})
+                this.setState({ ...this.state, success: true, message: res.data.message })
                 this.setState((prevState: { restaurants: any[]; }) => ({
                     restaurants: prevState.restaurants.concat(formItem)
                 }));
             }).catch(reason => {
-                this.setState({...this.state, failure: true, message: reason.message})
+                this.setState({ ...this.state, failure: true, message: reason.message })
             });
         }
 
@@ -237,36 +238,36 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
 
     componentDidMount() {
         axios.get('/api/restaurant')
-            .then((event) => {
-                this.setState({
-                    ...this.state,
-                    restaurants: event.data
-                })
-            }).catch(() => {
+             .then((event) => {
+                 this.setState({
+                     ...this.state,
+                     restaurants: event.data
+                 })
+             }).catch(() => {
         })
     }
 
     deleteRestaurant(restaurantId: number) {
-        const alert = DeleteAlert.getDeleteAlert();
+        const alert = DangerAlert.getDeleteAlert();
         alert.then((result: any) => {
-            if (result.value) {
-                axios.delete(`/api/restaurant/${restaurantId}`)
-                    .then(res => {
-                        this.setState({...this.state, success: true, message: res.data.message})
-                        const restaurants = this.state.restaurants.filter((item: any) => item.id !== restaurantId);
-                        this.setState({
-                            ...this.state,
-                            restaurants
-                        })
-                    }).catch(reason => {
-                    this.setState({...this.state, failure: true, message: reason.message})
+            if ( result.value ) {
+                axios.delete(`/api/restaurant/${ restaurantId }`)
+                     .then(res => {
+                         this.setState({ ...this.state, success: true, message: res.data.message })
+                         const restaurants = this.state.restaurants.filter((item: any) => item.id !== restaurantId);
+                         this.setState({
+                             ...this.state,
+                             restaurants
+                         })
+                     }).catch(reason => {
+                    this.setState({ ...this.state, failure: true, message: reason.message })
                 });
             }
         })
     }
 
     render() {
-        const {isFormValid, errors} = this.state;
+        const { isFormValid, errors } = this.state;
         return (
             <>
                 <div className="row mb-1">
@@ -283,38 +284,42 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     <th scope="col">Phone number</th>
                                     <th scope="col">Tags</th>
                                     <th scope="col"/>
+                                    <th scope="col"/>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {(this.state.restaurants.length > 0) ? this.state.restaurants.map((restaurant: any, index: any) => {
+                                { (this.state.restaurants.length > 0) ? this.state.restaurants.map((restaurant: any, index: any) => {
                                     return (
-                                        <tr key={index}>
-                                            <td>{restaurant.name}</td>
-                                            <td>{restaurant.address.street}</td>
-                                            <td>{restaurant.address.city}</td>
-                                            <td>{restaurant.address.country}</td>
-                                            <td>{restaurant.address.zipCode}</td>
-                                            <td>{restaurant.phoneNumber}</td>
-                                            <td>{restaurant.tags.join(',')}</td>
+                                        <tr key={ index }>
+                                            <td>{ restaurant.name }</td>
+                                            <td>{ restaurant.address.street }</td>
+                                            <td>{ restaurant.address.city }</td>
+                                            <td>{ restaurant.address.country }</td>
+                                            <td>{ restaurant.address.zipCode }</td>
+                                            <td>{ restaurant.phoneNumber }</td>
+                                            <td>{ restaurant.tags.join(',') }</td>
                                             <td><a href={ `/restaurant/images/${ restaurant.name }` }>
                                                 <button className="btn btn-primary">Photos</button>
                                             </a></td>
+                                            <td><a href={ `/restaurant/reviews/${ restaurant.name }` }>
+                                                <button className="btn btn-primary">Reviews</button>
+                                            </a></td>
                                             <td>
                                                 <button className="btn btn-dark mr-3"
-                                                        onClick={(e) => this.showEditModal(e, restaurant)}>
+                                                        onClick={ (e) => this.showEditModal(e, restaurant) }>
                                                     Update
                                                 </button>
                                                 <button className="btn btn-danger"
-                                                        onClick={() => this.deleteRestaurant(restaurant.id)}>
+                                                        onClick={ () => this.deleteRestaurant(restaurant.id) }>
                                                     Delete
                                                 </button>
                                             </td>
                                         </tr>
                                     )
                                 }) : <tr>
-                                    <td colSpan={7}>There are no restaurants</td>
-                                </tr>}
+                                    <td colSpan={ 7 }>There are no restaurants</td>
+                                </tr> }
                                 </tbody>
                             </table>
                         </div>
@@ -322,14 +327,14 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 </div>
                 <div className="row">
                     <div className="col-auto">
-                        <button onClick={() => this.showModal()}
+                        <button onClick={ () => this.showModal() }
                                 className="btn btn-secondary float-right">Add Restaurant
                         </button>
                     </div>
                 </div>
                 <Modal
-                    show={this.state.show}
-                    onHide={this.hideModal}
+                    show={ this.state.show }
+                    onHide={ this.hideModal }
                     dialogClassName="custom-modal"
                 >
                     <Modal.Header closeButton>
@@ -341,82 +346,82 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={ this.handleSubmit }>
                             <FormGroup>
                                 <Col>
                                     <Form.Label>Name</Form.Label>
-                                    <Form.Text>{errors.restaurantName}</Form.Text>
+                                    <Form.Text>{ errors.restaurantName }</Form.Text>
                                     <FormControl
                                         type="Text"
                                         placeholder="Restaurant name"
                                         name="restaurantName"
-                                        value={this.state.restaurantName}
-                                        onChange={this.handleInputChange}
+                                        value={ this.state.restaurantName }
+                                        onChange={ this.handleInputChange }
                                     />
                                 </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Col>
                                     <Form.Label>Street</Form.Label>
-                                    <Form.Text>{errors.street}</Form.Text>
+                                    <Form.Text>{ errors.street }</Form.Text>
                                     <FormControl
                                         type="Text"
                                         placeholder="Street"
                                         name="street"
-                                        value={this.state.street}
-                                        onChange={this.handleInputChange}
+                                        value={ this.state.street }
+                                        onChange={ this.handleInputChange }
                                     />
                                 </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Col>
                                     <Form.Label>City</Form.Label>
-                                    <Form.Text>{errors.city}</Form.Text>
+                                    <Form.Text>{ errors.city }</Form.Text>
                                     <FormControl
                                         type="Text"
                                         placeholder="City"
                                         name="city"
-                                        value={this.state.city}
-                                        onChange={this.handleInputChange}
+                                        value={ this.state.city }
+                                        onChange={ this.handleInputChange }
                                     />
                                 </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Col>
                                     <Form.Label>Country</Form.Label>
-                                    <Form.Text>{errors.country}</Form.Text>
+                                    <Form.Text>{ errors.country }</Form.Text>
                                     <FormControl
                                         type="Text"
                                         placeholder="Country"
                                         name="country"
-                                        value={this.state.country}
-                                        onChange={this.handleInputChange}
+                                        value={ this.state.country }
+                                        onChange={ this.handleInputChange }
                                     />
                                 </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Col>
                                     <Form.Label>Zip code</Form.Label>
-                                    <Form.Text>{errors.zipCode}</Form.Text>
+                                    <Form.Text>{ errors.zipCode }</Form.Text>
                                     <FormControl
                                         type="Text"
                                         placeholder="Zip code"
                                         name="zipCode"
-                                        value={this.state.zipCode}
-                                        onChange={this.handleInputChange}
+                                        value={ this.state.zipCode }
+                                        onChange={ this.handleInputChange }
                                     />
                                 </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Col>
                                     <Form.Label>Phone number</Form.Label>
-                                    <Form.Text>{errors.phoneNumber}</Form.Text>
+                                    <Form.Text>{ errors.phoneNumber }</Form.Text>
                                     <FormControl
                                         type="Text"
                                         placeholder="Phone number"
                                         name="phoneNumber"
-                                        value={this.state.phoneNumber}
-                                        onChange={this.handleInputChange}
+                                        value={ this.state.phoneNumber }
+                                        onChange={ this.handleInputChange }
                                     />
                                 </Col>
                             </FormGroup>
@@ -429,8 +434,8 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                 </Col>
                             </FormGroup>
                             <FormGroup>
-                                <Col sm={4}>
-                                    <Button type="submit" disabled={!isFormValid}>
+                                <Col sm={ 4 }>
+                                    <Button type="submit" disabled={ !isFormValid }>
                                         Submit
                                     </Button>
                                 </Col>
@@ -438,16 +443,16 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                         </Form>
                     </Modal.Body>
                 </Modal>
-                {this.state.success &&
-                <SweetAlert success title="Success!" confirmBtnBsStyle={'info'} timeout={20000}
-                            onConfirm={() => this.setState({success: false})}>
-                    <span>{this.state.message}</span>
-                </SweetAlert>}
-                {this.state.failure &&
-                <SweetAlert error title="Something went wrong" confirmBtnBsStyle={'info'} timeout={20000}
-                            onConfirm={() => this.setState({failure: false})}>
-                    <span>{this.state.message}</span>
-                </SweetAlert>}
+                { this.state.success &&
+                <SweetAlert success title="Success!" confirmBtnBsStyle={ 'info' } timeout={ 20000 }
+                            onConfirm={ () => this.setState({ success: false }) }>
+                    <span>{ this.state.message }</span>
+                </SweetAlert> }
+                { this.state.failure &&
+                <SweetAlert error title="Something went wrong" confirmBtnBsStyle={ 'info' } timeout={ 20000 }
+                            onConfirm={ () => this.setState({ failure: false }) }>
+                    <span>{ this.state.message }</span>
+                </SweetAlert> }
             </>
         )
     }
