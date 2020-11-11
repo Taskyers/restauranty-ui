@@ -3,7 +3,7 @@ import axios from "axios";
 import { ReviewDTO } from "./ReviewDTO";
 import './ClientReview.less';
 import { Button, Col, Form, FormControl, FormGroup, Modal, Row } from "react-bootstrap";
-import DeleteAlert from "../../utils/swal/DeleteAlert";
+import DangerAlert from "../../utils/swal/DangerAlert";
 import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
 
@@ -115,7 +115,7 @@ export default class ClientReview extends React.Component<any, any> {
     }
 
     deleteReview(id: number): void {
-        const alert = DeleteAlert.getDeleteAlert();
+        const alert = DangerAlert.getDeleteAlert();
         alert.then(result => {
             if ( result.value ) {
                 axios.delete<ResponseMessage<string>>(`/api/client/reviews/${ id }`).then(result => {
@@ -298,7 +298,7 @@ export default class ClientReview extends React.Component<any, any> {
                 </SweetAlert> }
                 { this.state.failure &&
                 <SweetAlert error title="Failure" confirmBtnBsStyle={ 'info' } timeout={ 2000 }
-                            onConfirm={ () => this.setState({ error: false }) }>
+                            onConfirm={ () => this.setState({ failure: false }) }>
                     { this.state.message }
                 </SweetAlert> }
             </>
