@@ -4,6 +4,7 @@ import Index from "./index";
 import SendEmailForm from "./index/recovery/SendEmailForm";
 import ChangePasswordForm from "./index/recovery/ChangePasswordForm";
 import RestaurantsDashboard from "./index/restaurant/RestaurantsDashboard";
+import Chat from "./index/chat/Chat";
 
 export default class Router extends React.Component<any, any> {
     render() {
@@ -15,6 +16,7 @@ export default class Router extends React.Component<any, any> {
                        render={ ({ match }) => <ChangePasswordForm token={ match.params.token }/> }/>
                 <Route exact path='/restaurant' component={RestaurantsDashboard}/>
                 <Route exact path='/client'/>
+                <Route exact path='/chat' component={Chat}/>
             </BrowserRouter>
         );
     }
