@@ -7,7 +7,7 @@ import 'react-photo-view/dist/index.css';
 import SweetAlert from "react-bootstrap-sweetalert";
 import ResponseMessage from "../../ResponseMessage";
 import { Button, Col, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
-import DeleteAlert from "../../utils/swal/DeleteAlert";
+import DangerAlert from "../../utils/swal/DangerAlert";
 
 export default class RestaurantPhotos extends React.Component<any, any> {
 
@@ -47,7 +47,7 @@ export default class RestaurantPhotos extends React.Component<any, any> {
     }
 
     deleteImage(name: string) {
-        const alert = DeleteAlert.getDeleteAlert();
+        const alert = DangerAlert.getDeleteAlert();
         alert.then((result: any) => {
             if ( result.value ) {
                 axios.delete<ResponseMessage<string>>(`/api/restaurant/images/${ name }`)

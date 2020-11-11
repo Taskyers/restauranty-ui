@@ -4,7 +4,7 @@ import axios from "axios";
 import {Button} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
-import SweetAlert from "react-bootstrap-sweetalert";
+import {ChatMessage} from "./ChatMessage";
 
 
 let Stomp = require('stompjs');
@@ -36,7 +36,6 @@ export default class Chat extends React.Component<any, any> {
     connect() {
         let sockJs = new SockJS("/api/ws");
         stompClient = Stomp.over(sockJs);
-        // do usuniecia
         stompClient.debug = false;
         stompClient.connect({"Authorization": localStorage.getItem('token')}, this.onConnected, this.onError)
     }
@@ -125,7 +124,7 @@ export default class Chat extends React.Component<any, any> {
 
         }).then(axios.spread((...responses) => {
             this.setState(() => ({
-                contacts: this.state.contacts.map((item: any, index: any) => {
+                contacts: this.state.contacts.map((item: any, index: number) => {
                     return {name: item.name, newMessages: responses[index].data}
                 })
             }));
@@ -134,7 +133,7 @@ export default class Chat extends React.Component<any, any> {
 
     }
 
-    findChatMessages(recipientUsername: any) {
+    findChatMessages(recipientUsername: string) {
         axios.get(`/api/secured/messages/${recipientUsername}`).then((res) => {
                 this.setState({messages: res.data})
             }
@@ -143,12 +142,9 @@ export default class Chat extends React.Component<any, any> {
 
     sendMessage(text: string) {
         if (text.trim() !== "") {
-            const message = {
-                author: currentUser,
-                recipient: this.state.activeContact,
-                content: text,
-                timestamp: new Date().toLocaleDateString("en") + " " + new Date().toLocaleTimeString().slice(0, 5)
-            }
+            const formattedDate = new Date().toLocaleDateString("en") + " " + new Date().toLocaleTimeString().slice(0, 5)
+            const message = new ChatMessage(currentUser, this.state.activeContact, text, formattedDate)
+
             stompClient.send("/app/secured/chat", {}, JSON.stringify(message));
             this.setState({
                 ...this.state,
@@ -171,7 +167,7 @@ export default class Chat extends React.Component<any, any> {
                             <div className="messages-box">
                                 <div className="list-group rounded-0">
 
-                                    {this.state.contacts.map((contact: any, index: any) => (
+                                    {this.state.contacts.map((contact: any, index: number) => (
                                         <a key={index}
                                            className={this.state.activeContact && contact.name === this.state.activeContact ?
                                                "list-group-item list-group-item-action active text-white rounded-0" : "list-group-item list-group-item-action list-group-item-light rounded-0"}
@@ -194,7 +190,8 @@ export default class Chat extends React.Component<any, any> {
                                         </a>
                                     ))}
                                     {this.state.contacts.length === 0 &&
-                                    <p className="font-italic text-center mb-0 text-bold font-weight-bold text-info"> No chat messages</p>
+                                    <p className="font-italic text-center mb-0 text-bold font-weight-bold text-info"> No
+                                        chat messages</p>
                                     }
 
                                 </div>
@@ -207,7 +204,7 @@ export default class Chat extends React.Component<any, any> {
                             <p className="h5 mb-0 py-1 text-center">{this.state.activeContact}</p>
                         </div>
                         <div className="px-4 py-2 chat-box bg-white">
-                            {this.state.messages.map((msg: any, index: any) => (
+                            {this.state.messages.map((msg: ChatMessage, index: number) => (
                                 <div key={index}
                                      className={msg.author === currentUser ? "media sent w-50 ml-auto mb-3" : "media replies w-50 mb-3"}>
                                     <div className="media-body">
