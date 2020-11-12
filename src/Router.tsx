@@ -9,6 +9,7 @@ import ClientIndex from "./client/index/ClientIndex";
 import ClientReview from "./client/reviews/ClientReview";
 import RestaurantReviews from "./restaurant/reviews/RestaurantReviews";
 import ReviewReports from "./admin/ReviewReports";
+import Chat from "./index/chat/Chat";
 
 export default class Router extends React.Component<any, any> {
     render() {
@@ -27,6 +28,7 @@ export default class Router extends React.Component<any, any> {
                 <Route exact path='/client/reviews/:restaurantName'
                        render={ ({ match }) => <ClientReview restaurantName={ match.params.restaurantName }/> }/>
                 <Route exact path='/admin' component={ ReviewReports }/>
+                <Route exact path='/chat' component={Chat}/>
             </BrowserRouter>
         );
     }
