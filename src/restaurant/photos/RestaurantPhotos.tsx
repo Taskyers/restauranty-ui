@@ -6,7 +6,7 @@ import { PhotoProvider, PhotoConsumer } from 'react-photo-view';
 import 'react-photo-view/dist/index.css';
 import SweetAlert from "react-bootstrap-sweetalert";
 import ResponseMessage from "../../ResponseMessage";
-import { Button, Col, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
+import { Button, Col, Form, FormCheck, FormControl, FormGroup, Modal } from "react-bootstrap";
 import DangerAlert from "../../utils/swal/DangerAlert";
 
 export default class RestaurantPhotos extends React.Component<any, any> {
@@ -20,11 +20,14 @@ export default class RestaurantPhotos extends React.Component<any, any> {
             success: false,
             failure: false,
             showModal: false,
-            photo: null
+            photo: null,
+            setAsMain: false
         };
         this.deleteImage = this.deleteImage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.updateMainPhoto = this.updateMainPhoto.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.showAddModal = this.showAddModal.bind(this);
         this.hideAddModal = this.hideAddModal.bind(this);
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
@@ -39,7 +42,7 @@ export default class RestaurantPhotos extends React.Component<any, any> {
                 promises.push(axios.get(`/api/restaurant/images/get/${ image.name }`, { responseType: 'arraybuffer' })
                                    .then((result: any) => {
                                        const base64 = btoa(new Uint8Array(result.data).reduce((data, byte) => data + String.fromCharCode(byte), ''),);
-                                       encodedImages.push(new RestaurantPhoto(`data:;base64,${ base64 }`, image.name, image.size, image.type));
+                                       encodedImages.push(new RestaurantPhoto(`data:;base64,${ base64 }`, image.name, image.size, image.type, image.main));
                                    }));
             }
             Promise.all(promises).then(() => this.setState({ images: encodedImages, isLoaded: true }));
@@ -65,11 +68,20 @@ export default class RestaurantPhotos extends React.Component<any, any> {
         event.preventDefault();
         const formData = new FormData();
         formData.append('image', this.state.photo);
-        axios.post<ResponseMessage<string>>(`/api/restaurant/images/${ this.props.restaurantName }`, formData, { headers: { 'content-type': 'multipart/form-data' } })
+        formData.append('restaurant', this.props.restaurantName);
+        formData.append('isMain', this.state.setAsMain);
+        axios.post<ResponseMessage<string>>(`/api/restaurant/images/`, formData, { headers: { 'content-type': 'multipart/form-data' } })
              .then(result => {
                  this.setState({ message: result.data.message, success: true });
-                 window.location.reload();
              }).catch(reason => {
+            this.setState({ message: 'Error occurred', failure: true });
+        });
+    }
+
+    updateMainPhoto(name: string): void {
+        axios.patch<ResponseMessage<string>>(`/api/restaurant/images/${ name }`).then(result => {
+            this.setState({ message: result.data.message, success: true });
+        }).catch(reason => {
             this.setState({ message: 'Error occurred', failure: true });
         });
     }
@@ -77,6 +89,10 @@ export default class RestaurantPhotos extends React.Component<any, any> {
     handleInputChange(event: any): void {
         event.preventDefault();
         this.setState({ photo: event.target.files[0] });
+    }
+
+    handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.setState({ setAsMain: event.target.checked });
     }
 
     showAddModal(): void {
@@ -105,17 +121,23 @@ export default class RestaurantPhotos extends React.Component<any, any> {
                             <th scope='col'>Type</th>
                             <th scope='col'/>
                             <th scope='col'/>
+                            <th scope='col'/>
                         </tr>
                         </thead>
                         <tbody>
                         <PhotoProvider>
                             { this.state.images.length > 0 && this.state.images.map((image: RestaurantPhoto) => {
                                 return (
-
                                     <tr key={ image.name }>
                                         <td>{ image.name }</td>
                                         <td>{ image.size }</td>
                                         <td>{ image.type }</td>
+                                        <td>{ !image.main ?
+                                            <button className="btn btn-info"
+                                                    onClick={ () => this.updateMainPhoto(image.name) }>Set as
+                                                main</button> :
+                                            <span className="font-weight-bold font-italic">Main photo</span> }
+                                        </td>
                                         <td>
                                             <PhotoConsumer src={ image.content } intro={ image.name }>
                                                 <img className='restaurant-image' src={ image.content }
@@ -158,6 +180,11 @@ export default class RestaurantPhotos extends React.Component<any, any> {
                                     <FormControl required type="file" accept=".png, .jpg, .jpeg" name="photo"
                                                  onChange={ this.handleInputChange }/>
                                 </Col>
+                                <Col>
+                                    <FormCheck custom id={ "main" } type={ "checkbox" } name="isMain"
+                                               label={ "Set as main" }
+                                               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => this.handleCheckboxChange(e) }/>
+                                </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Col sm={ 4 }>
@@ -171,12 +198,12 @@ export default class RestaurantPhotos extends React.Component<any, any> {
                 </Modal>
                 { this.state.success &&
                 <SweetAlert success title="Success" confirmBtnBsStyle={ 'info' } timeout={ 2000 }
-                            onConfirm={ () => this.setState({ success: false }) }>
+                            onConfirm={ () => window.location.reload() }>
                     { this.state.message }
                 </SweetAlert> }
                 { this.state.failure &&
                 <SweetAlert error title="Failure" confirmBtnBsStyle={ 'info' } timeout={ 2000 }
-                            onConfirm={ () => this.setState({ failure: false }) }>
+                            onConfirm={ () => window.location.reload() }>
                     { this.state.message }
                 </SweetAlert> }
             </>
