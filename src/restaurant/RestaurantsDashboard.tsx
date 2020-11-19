@@ -285,6 +285,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     <th scope="col">Tags</th>
                                     <th scope="col"/>
                                     <th scope="col"/>
+                                    <th scope="col"/>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -305,6 +306,11 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                             <td><a href={ `/restaurant/reviews/${ restaurant.name }` }>
                                                 <button className="btn btn-primary">Reviews</button>
                                             </a></td>
+                                            <td>
+                                                <a href={ `/restaurant/menu/${ restaurant.name }` }>
+                                                    <button className="btn btn-primary">Menu</button>
+                                                </a>
+                                            </td>
                                             <td>
                                                 <button className="btn btn-dark mr-3"
                                                         onClick={ (e) => this.showEditModal(e, restaurant) }>
