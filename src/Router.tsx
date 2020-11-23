@@ -10,6 +10,7 @@ import ClientReview from "./client/reviews/ClientReview";
 import RestaurantReviews from "./restaurant/reviews/RestaurantReviews";
 import ReviewReports from "./admin/ReviewReports";
 import Chat from "./index/chat/Chat";
+import RestaurantMenu from "./restaurant/menu/RestaurantMenu";
 
 export default class Router extends React.Component<any, any> {
     render() {
@@ -24,11 +25,13 @@ export default class Router extends React.Component<any, any> {
                        render={ ({ match }) => <RestaurantPhotos restaurantName={ match.params.restaurantName }/> }/>
                 <Route exact path='/restaurant/reviews/:restaurantName'
                        render={ ({ match }) => <RestaurantReviews restaurantName={ match.params.restaurantName }/> }/>
+                <Route exact path='/restaurant/menu/:restaurantName'
+                       render={ ({ match }) => <RestaurantMenu restaurantName={ match.params.restaurantName }/> }/>
                 <Route exact path='/client' component={ ClientIndex }/>
                 <Route exact path='/client/reviews/:restaurantName'
                        render={ ({ match }) => <ClientReview restaurantName={ match.params.restaurantName }/> }/>
                 <Route exact path='/admin' component={ ReviewReports }/>
-                <Route exact path='/chat' component={Chat}/>
+                <Route exact path='/chat' component={ Chat }/>
             </BrowserRouter>
         );
     }
