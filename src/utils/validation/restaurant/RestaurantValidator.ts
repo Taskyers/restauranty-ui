@@ -7,6 +7,15 @@ export const restaurantNameValidation = (name: string) => {
     return null;
 };
 
+export const restaurantDescriptionValidation = (name: string) => {
+
+    if (name.trim() === '') {
+        return `Restaurant description is required`;
+    }
+
+    return null;
+};
+
 export const restaurantStreetValidation = (street: string) => {
     if (
         /^[A-Z][a-z0-9/ ]+$/.test(
