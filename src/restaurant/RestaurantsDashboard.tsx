@@ -3,7 +3,7 @@ import './RestaurantsDashboard.less';
 import axios from "axios";
 import { Button, Col, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
 import {
-    restaurantCityCountryValidation,
+    restaurantCityCountryValidation, restaurantDescriptionValidation,
     restaurantNameValidation, restaurantPhoneNumberValidation,
     restaurantStreetValidation, restaurantTagsValidation, restaurantZipCodeValidation
 } from "../utils/validation/restaurant/RestaurantValidator";
@@ -19,6 +19,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             restaurants: [],
             restaurantId: '',
             restaurantName: '',
+            description: '',
             street: '',
             city: '',
             country: '',
@@ -28,6 +29,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             show: false,
             errors: {
                 restaurantName: '',
+                description: '',
                 street: '',
                 city: '',
                 country: '',
@@ -60,12 +62,13 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             show: true,
             restaurantId: recordToEdit.id,
             restaurantName: recordToEdit.name,
+            description: recordToEdit.description,
             street: recordToEdit.address.street,
             city: recordToEdit.address.city,
             country: recordToEdit.address.country,
             zipCode: recordToEdit.address.zipCode,
             phoneNumber: recordToEdit.phoneNumber,
-            tags: recordToEdit.tags,
+            tags: recordToEdit.tags.join(','),
             isFormValid: true
         });
     }
@@ -75,6 +78,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             show: false,
             restaurantId: '',
             restaurantName: '',
+            description: '',
             street: '',
             city: '',
             country: '',
@@ -83,6 +87,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             tags: '',
             errors: {
                 restaurantName: '',
+                description: '',
                 street: '',
                 city: '',
                 country: '',
@@ -119,6 +124,9 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                          }).catch(() => {
                     })
                 }
+                break;
+            case 'description':
+                errors.description = restaurantDescriptionValidation(value)
                 break;
             case 'street':
                 errors.street = restaurantStreetValidation(value)
@@ -168,6 +176,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
         const formItem = {
             id: this.state.restaurantId,
             name: this.state.restaurantName,
+            description: this.state.description,
             address: {
                 street: this.state.street,
                 city: this.state.city,
@@ -181,9 +190,10 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
         if ( formItem.id ) {
             axios.put(`/api/restaurant/${ formItem.id }`, {
                 'name': formItem.name,
+                'description': formItem.description,
                 'address': formItem.address,
                 'phoneNumber': formItem.phoneNumber,
-                'tags': formItem.tags === '' ? null : formItem.tags
+                'tags': formItem.tags === '' ? [] : formItem.tags
             }).then(res => {
                 this.setState({ ...this.state, success: true, message: res.data.message })
                 this.setState((prevState: { restaurants: any[]; }) => ({
@@ -202,9 +212,10 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
         } else {
             axios.post('/api/restaurant', {
                 'name': formItem.name,
+                'description': formItem.description,
                 'address': formItem.address,
                 'phoneNumber': formItem.phoneNumber,
-                'tags': formItem.tags === '' ? null : formItem.tags
+                'tags': formItem.tags === '' ? [] : formItem.tags
             }).then(res => {
                 this.setState({ ...this.state, success: true, message: res.data.message })
                 this.setState((prevState: { restaurants: any[]; }) => ({
@@ -219,18 +230,22 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             show: false,
             restaurantId: '',
             restaurantName: '',
+            description: '',
             street: '',
             city: '',
             country: '',
             zipCode: '',
             phoneNumber: '',
+            tags: '',
             errors: {
                 restaurantName: '',
+                description: '',
                 street: '',
                 city: '',
                 country: '',
                 zipCode: '',
-                phoneNumber: ''
+                phoneNumber: '',
+                tags: '',
             }
         });
         event.preventDefault();
@@ -271,12 +286,13 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
         return (
             <>
                 <div className="row mb-1">
-                    <div className="col-md-9 mb-0">
+                    <div className="col-md-11 mb-0">
                         <div className="tableFixHead">
                             <table className="table table-hover restaurantTable text-center">
                                 <thead>
                                 <tr>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
                                     <th scope="col">Street</th>
                                     <th scope="col">City</th>
                                     <th scope="col">Country</th>
@@ -294,6 +310,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     return (
                                         <tr key={ index }>
                                             <td>{ restaurant.name }</td>
+                                            <td>{ restaurant.description }</td>
                                             <td>{ restaurant.address.street }</td>
                                             <td>{ restaurant.address.city }</td>
                                             <td>{ restaurant.address.country }</td>
@@ -362,6 +379,19 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                         placeholder="Restaurant name"
                                         name="restaurantName"
                                         value={ this.state.restaurantName }
+                                        onChange={ this.handleInputChange }
+                                    />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup>
+                                <Col>
+                                    <Form.Label>Description</Form.Label>
+                                    <Form.Text>{ errors.description }</Form.Text>
+                                    <FormControl
+                                        type="Text"
+                                        placeholder="Restaurant description"
+                                        name="description"
+                                        value={ this.state.description }
                                         onChange={ this.handleInputChange }
                                     />
                                 </Col>
