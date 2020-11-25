@@ -7,6 +7,7 @@ import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
 import './RestaurantMenu.less';
 import DangerAlert from "../../utils/swal/DangerAlert";
+import LoggedHeader from "../../shared/header/LoggedHeader";
 
 export default class RestaurantMenu extends React.Component<any, any> {
     constructor(props: any) {
@@ -132,6 +133,7 @@ export default class RestaurantMenu extends React.Component<any, any> {
     render() {
         return (
             <>
+                <LoggedHeader text={ "Restaurant" } link={ "/restaurant" }/>
                 <div>
                     <Row className="justify-content-center align-self-center text-center">
                         <ButtonGroup>

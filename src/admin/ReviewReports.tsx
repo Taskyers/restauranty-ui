@@ -4,6 +4,7 @@ import { ReviewReportDTO } from "./ReviewReportDTO";
 import { Modal } from "react-bootstrap";
 import SweetAlert from "react-bootstrap-sweetalert";
 import ResponseMessage from "../ResponseMessage";
+import LoggedHeader from "../shared/header/LoggedHeader";
 
 export default class ReviewReports extends React.Component<any, any> {
     constructor(props: any) {
@@ -50,6 +51,7 @@ export default class ReviewReports extends React.Component<any, any> {
     render() {
         return (
             <>
+                <LoggedHeader text={ "Administrator" } link={ "/admin" }/>
                 <div>
                     <table className="table table-hover restaurantTable text-center">
                         <thead>

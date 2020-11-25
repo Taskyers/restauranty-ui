@@ -8,6 +8,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import ResponseMessage from "../../ResponseMessage";
 import { Button, Col, Form, FormCheck, FormControl, FormGroup, Modal } from "react-bootstrap";
 import DangerAlert from "../../utils/swal/DangerAlert";
+import LoggedHeader from "../../shared/header/LoggedHeader";
 
 export default class RestaurantPhotos extends React.Component<any, any> {
 
@@ -106,6 +107,7 @@ export default class RestaurantPhotos extends React.Component<any, any> {
     render() {
         return (
             <>
+                <LoggedHeader text={ "Restaurant" } link={ "/restaurant" }/>
                 <div className="row mb-1">
                     { !this.state.isLoaded &&
                     <SweetAlert showCloseButton={ false } showConfirm={ false } info title="Please wait"

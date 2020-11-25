@@ -9,7 +9,7 @@ import ClientIndex from "./client/index/ClientIndex";
 import ClientReview from "./client/reviews/ClientReview";
 import RestaurantReviews from "./restaurant/reviews/RestaurantReviews";
 import ReviewReports from "./admin/ReviewReports";
-import Chat from "./index/chat/Chat";
+import Chat from "./shared/chat/Chat";
 import RestaurantMenu from "./restaurant/menu/RestaurantMenu";
 
 export default class Router extends React.Component<any, any> {

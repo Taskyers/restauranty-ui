@@ -6,6 +6,7 @@ import { Button, Col, Form, FormControl, FormGroup, Modal, Row } from "react-boo
 import DangerAlert from "../../utils/swal/DangerAlert";
 import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
+import LoggedHeader from "../../shared/header/LoggedHeader";
 
 export default class ClientReview extends React.Component<any, any> {
 
@@ -155,6 +156,7 @@ export default class ClientReview extends React.Component<any, any> {
     render() {
         return (
             <>
+                <LoggedHeader text={ "Client" } link={ "/client" }/>
                 <div>
                     { this.state.reviews.length > 0 &&
                     <Row className="justify-content-center align-self-center text-center">

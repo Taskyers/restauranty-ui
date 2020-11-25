@@ -10,6 +10,7 @@ import {
 import { validateEditForm, validateForm } from "../utils/validation/shared/SharedValidation";
 import SweetAlert from "react-bootstrap-sweetalert";
 import DangerAlert from "../utils/swal/DangerAlert";
+import LoggedHeader from "../shared/header/LoggedHeader";
 
 export default class RestaurantsDashboard extends React.Component<any, any> {
 
@@ -285,6 +286,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
         const { isFormValid, errors } = this.state;
         return (
             <>
+                <LoggedHeader text={ "Restaurant" } link={ "/restaurant" }/>
                 <div className="row mb-1">
                     <div className="col-md-11 mb-0">
                         <div className="tableFixHead">
@@ -329,7 +331,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                                 </a>
                                             </td>
                                             <td>
-                                                <button className="btn btn-dark mr-3"
+                                                <button className="btn btn-dark"
                                                         onClick={ (e) => this.showEditModal(e, restaurant) }>
                                                     Update
                                                 </button>

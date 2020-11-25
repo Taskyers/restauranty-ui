@@ -5,6 +5,7 @@ import { Modal } from "react-bootstrap";
 import DangerAlert from "../../utils/swal/DangerAlert";
 import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
+import LoggedHeader from "../../shared/header/LoggedHeader";
 
 export default class RestaurantReviews extends React.Component<any, any> {
     constructor(props: any) {
@@ -51,6 +52,7 @@ export default class RestaurantReviews extends React.Component<any, any> {
     render() {
         return (
             <>
+                <LoggedHeader text={ "Restaurant" } link={ "/restaurant" }/>
                 <div>
                     <table className="table table-hover restaurantTable text-center">
                         <thead>
