@@ -3,8 +3,8 @@ import axios from "axios";
 import { ReviewReportDTO } from "./ReviewReportDTO";
 import { Modal } from "react-bootstrap";
 import SweetAlert from "react-bootstrap-sweetalert";
-import ResponseMessage from "../ResponseMessage";
-import LoggedHeader from "../shared/header/LoggedHeader";
+import ResponseMessage from "../../ResponseMessage";
+import LoggedHeader from "../../shared/header/LoggedHeader";
 
 export default class ReviewReports extends React.Component<any, any> {
     constructor(props: any) {
