@@ -10,6 +10,7 @@ export default class Logout extends React.Component<any, any> {
     logout(): void {
         localStorage.removeItem('username');
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         window.location.href = '/';
     }
 

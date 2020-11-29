@@ -31,14 +31,17 @@ export default class LoginForm extends React.Component<any, any> {
             'username': this.state.username,
             'password': this.state.password
         }).then(res => {
-            localStorage.setItem('username',this.state.username);
+            localStorage.setItem('username', this.state.username);
             localStorage.setItem('token', res.headers.authorization);
             const role = res.headers['granted-role'];
             if ( role === 'ROLE_CLIENT' ) {
+                localStorage.setItem('role', 'client');
                 this.props.history.push('/client');
             } else if ( role === 'ROLE_RESTAURANT' ) {
+                localStorage.setItem('role', 'restaurant');
                 this.props.history.push('/restaurant');
             } else {
+                localStorage.setItem('role', 'admin');
                 this.props.history.push('/admin');
             }
         }).catch(reason => {
