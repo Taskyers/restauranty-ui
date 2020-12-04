@@ -14,6 +14,7 @@ import RestaurantMenu from "./restaurant/menu/RestaurantMenu";
 import Users from "./admin/users/Users";
 import AdminIndex from "./admin/index/AdminIndex";
 import NotFoundPage from "./index/404/NotFoundPage";
+import AdminRestaurants from "./admin/restaurants/AdminRestaurants";
 
 export default class Router extends React.Component<any, any> {
 
@@ -24,9 +25,7 @@ export default class Router extends React.Component<any, any> {
     private static readonly ROLE_ADMIN: string = 'admin';
 
     haveProperRole(expected: string): boolean {
-        console.log(expected);
         const role = localStorage.getItem('role');
-        console.log(role);
         return role !== null && role === expected;
     }
 
@@ -62,6 +61,8 @@ export default class Router extends React.Component<any, any> {
                        render={ () => this.haveProperRole(Router.ROLE_ADMIN) ? <AdminIndex/> : <NotFoundPage/> }/>
                 <Route exact path='/admin/reports'
                        render={ () => this.haveProperRole(Router.ROLE_ADMIN) ? <ReviewReports/> : <NotFoundPage/> }/>
+                <Route exact path='/admin/restaurants'
+                       render={ () => this.haveProperRole(Router.ROLE_ADMIN) ? <AdminRestaurants/> : <NotFoundPage/> }/>
                 <Route exact path='/admin/users'
                        render={ () => this.haveProperRole(Router.ROLE_ADMIN) ? <Users/> : <NotFoundPage/> }/>
                 {/* Shared */ }

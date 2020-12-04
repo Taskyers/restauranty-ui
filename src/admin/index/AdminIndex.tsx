@@ -17,6 +17,11 @@ export default class AdminIndex extends React.Component<any, any> {
                         <a href='/admin/users'>
                             <Button>Users</Button>
                         </a>
+                    </span> &nbsp;
+                    <span>
+                        <a href='/admin/restaurants'>
+                            <Button>Restaurants</Button>
+                        </a>
                     </span>
                 </Row>
             </>
