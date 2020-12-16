@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route } from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 import Index from "./index";
 import SendEmailForm from "./index/recovery/SendEmailForm";
 import ChangePasswordForm from "./index/recovery/ChangePasswordForm";
@@ -15,6 +15,8 @@ import Users from "./admin/users/Users";
 import AdminIndex from "./admin/index/AdminIndex";
 import NotFoundPage from "./index/404/NotFoundPage";
 import AdminRestaurants from "./admin/restaurants/AdminRestaurants";
+import RestaurantReservation from "./restaurant/reservation/RestaurantReservation";
+import ClientReservation from "./client/reservation/ClientReservation";
 
 export default class Router extends React.Component<any, any> {
 
@@ -50,12 +52,18 @@ export default class Router extends React.Component<any, any> {
                 <Route exact path='/restaurant/menu/:restaurantName'
                        render={ ({ match }) => this.haveProperRole(Router.ROLE_RESTAURANT) ?
                            <RestaurantMenu restaurantName={ match.params.restaurantName }/> : <NotFoundPage/> }/>
+                <Route exact path='/restaurant/reservations/:restaurantName'
+                       render={ ({ match }) => this.haveProperRole(Router.ROLE_RESTAURANT) ?
+                           <RestaurantReservation restaurantName={ match.params.restaurantName }/> : <NotFoundPage/> }/>
                 {/* Client */ }
                 <Route exact path='/client'
                        render={ () => this.haveProperRole(Router.ROLE_CLIENT) ? <ClientIndex/> : <NotFoundPage/> }/>
                 <Route exact path='/client/reviews/:restaurantName'
                        render={ ({ match }) => this.haveProperRole(Router.ROLE_CLIENT) ?
                            <ClientReview restaurantName={ match.params.restaurantName }/> : <NotFoundPage/> }/>
+                <Route exact path='/client/reservations'
+                       render={ ({ match }) => this.haveProperRole(Router.ROLE_CLIENT) ?
+                           <ClientReservation restaurantName={ match.params.restaurantName }/> : <NotFoundPage/> }/>
                 {/* Admin */ }
                 <Route exact path='/admin'
                        render={ () => this.haveProperRole(Router.ROLE_ADMIN) ? <AdminIndex/> : <NotFoundPage/> }/>
