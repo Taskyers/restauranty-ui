@@ -400,6 +400,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                     <th scope="col"/>
                                     <th scope="col"/>
                                     <th scope="col"/>
+                                    <th scope="col"/>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
