@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Route} from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 import Index from "./index";
 import SendEmailForm from "./index/recovery/SendEmailForm";
 import ChangePasswordForm from "./index/recovery/ChangePasswordForm";
@@ -17,6 +17,7 @@ import NotFoundPage from "./index/404/NotFoundPage";
 import AdminRestaurants from "./admin/restaurants/AdminRestaurants";
 import RestaurantReservation from "./restaurant/reservation/RestaurantReservation";
 import ClientReservation from "./client/reservation/ClientReservation";
+import ClientMenu from "./client/menu/ClientMenu";
 
 export default class Router extends React.Component<any, any> {
 
@@ -58,6 +59,9 @@ export default class Router extends React.Component<any, any> {
                 {/* Client */ }
                 <Route exact path='/client'
                        render={ () => this.haveProperRole(Router.ROLE_CLIENT) ? <ClientIndex/> : <NotFoundPage/> }/>
+                <Route exact path='/client/menu/:restaurantName'
+                       render={ ({ match }) => this.haveProperRole(Router.ROLE_CLIENT) ?
+                           <ClientMenu restaurantName={ match.params.restaurantName }/> : <NotFoundPage/> }/>
                 <Route exact path='/client/reviews/:restaurantName'
                        render={ ({ match }) => this.haveProperRole(Router.ROLE_CLIENT) ?
                            <ClientReview restaurantName={ match.params.restaurantName }/> : <NotFoundPage/> }/>

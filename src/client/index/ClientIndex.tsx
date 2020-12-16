@@ -210,6 +210,13 @@ export default class ClientIndex extends React.Component<any, any> {
                                                 Book it
                                             </button>
                                         </div>
+                                        <div className="review-link m-1">
+                                            <a href={ `/client/menu/${ restaurantSearch.name }` }>
+                                                <button className="btn btn-dark">
+                                                    Menu
+                                                </button>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div>
 
