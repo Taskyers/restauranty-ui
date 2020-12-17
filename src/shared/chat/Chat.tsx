@@ -5,6 +5,7 @@ import {Button} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {ChatMessage} from "./ChatMessage";
+import LoggedHeader from "../header/LoggedHeader";
 
 
 let Stomp = require('stompjs');
@@ -22,7 +23,8 @@ export default class Chat extends React.Component<any, any> {
             contacts: [],
             activeContact: "",
             messages: [],
-            connected: false
+            connected: false,
+            user: ""
         }
         this.connect = this.connect.bind(this);
         this.findChatMessages = this.findChatMessages.bind(this);
@@ -60,6 +62,11 @@ export default class Chat extends React.Component<any, any> {
             this.connect();
             this.loadContacts();
             currentUser = localStorage.getItem('username');
+        }
+        if(localStorage.getItem("role") === "client"){
+            this.setState({user: "client"})
+        }else{
+            this.setState({user: "restaurant"})
         }
     }
 
@@ -155,6 +162,8 @@ export default class Chat extends React.Component<any, any> {
 
     render() {
         return (
+            <>
+                <LoggedHeader text={this.state.user} link={`/${this.state.user}`}/>
             <div className="container py-5 px-4">
                 <div className="row rounded-lg overflow-hidden shadow">
 
@@ -250,6 +259,7 @@ export default class Chat extends React.Component<any, any> {
                     </div>
                 </div>
             </div>
+                </>
         )
     }
 }
