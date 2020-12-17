@@ -27,6 +27,8 @@ export default class ClientIndex extends React.Component<any, any> {
             success: false,
             message: '',
             failure: false,
+            chatMessage: '',
+            showMessageModal: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleRestaurantNameChange = this.handleRestaurantNameChange.bind(this);
@@ -35,6 +37,8 @@ export default class ClientIndex extends React.Component<any, any> {
         this.hideModal = this.hideModal.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.makeReservation = this.makeReservation.bind(this);
+        this.openMessageModal = this.openMessageModal.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
     }
 
@@ -78,6 +82,10 @@ export default class ClientIndex extends React.Component<any, any> {
         this.setState({show: true, reservationRestaurant: restaurantName});
     }
 
+    openMessageModal(restaurantName: string) {
+        this.setState({showMessageModal: true, reservationRestaurant: restaurantName});
+    }
+
     hideModal() {
         this.setState({
             show: false,
@@ -85,7 +93,9 @@ export default class ClientIndex extends React.Component<any, any> {
             reservationDate: '',
             personsCount: 0,
             reservationRestaurant: '',
-            restaurantOpenHours: []
+            restaurantOpenHours: [],
+            chatMessage: '',
+            showMessageModal: false
         });
     }
 
@@ -153,6 +163,24 @@ export default class ClientIndex extends React.Component<any, any> {
         );
     }
 
+    sendMessage(event: { preventDefault: () => void; }): void {
+        event.preventDefault();
+        axios.get(`api/client/owner/${this.state.reservationRestaurant}`).then((res) => {
+                axios.post(`api/secured/messages`, {
+                    author: localStorage.getItem('username'),
+                    recipient: res.data,
+                    content: this.state.chatMessage,
+                    timestamp: new Date().toLocaleDateString("en") + " " + new Date().toLocaleTimeString().slice(0, 5)
+                }).then(res => {
+                    this.setState({...this.state, success: true, message: 'Message sent!'})
+                }).catch(reason => {
+                        this.setState({...this.state, failure: true, message: reason.message})
+                    }
+                );
+            }
+        )
+    }
+
 
     render() {
         return (
@@ -211,11 +239,17 @@ export default class ClientIndex extends React.Component<any, any> {
                                             </button>
                                         </div>
                                         <div className="review-link m-1">
-                                            <a href={ `/client/menu/${ restaurantSearch.name }` }>
+                                            <a href={`/client/menu/${restaurantSearch.name}`}>
                                                 <button className="btn btn-dark">
                                                     Menu
                                                 </button>
                                             </a>
+                                        </div>
+                                        <div className="review-link m-1">
+                                            <button className="btn btn-dark"
+                                                    onClick={(e) => this.openMessageModal(restaurantSearch.name)}>
+                                                Chat
+                                            </button>
                                         </div>
                                     </div>
                                     <div>
@@ -294,6 +328,42 @@ export default class ClientIndex extends React.Component<any, any> {
                                 </Col>
                             </FormGroup>
 
+                            <FormGroup>
+                                <Col sm={4}>
+                                    <Button type="submit">
+                                        Submit
+                                    </Button>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+                <Modal
+                    show={this.state.showMessageModal}
+                    onHide={this.hideModal}
+                    dialogClassName="custom-modal"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title
+                            id="contained-modal-title-lg "
+                            className="text-center"
+                        >
+                            Write message to {this.state.reservationRestaurant}
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={this.sendMessage}>
+                            <FormGroup>
+                                <Col>
+                                    <Form.Label>Message</Form.Label>
+                                    <FormControl type="textarea" name="chatMessage"
+                                                 as="textarea" rows={3}
+                                                 value={this.state.chatMessage}
+                                                 onChange={this.handleInputChange}
+                                                 required
+                                    />
+                                </Col>
+                            </FormGroup>
                             <FormGroup>
                                 <Col sm={4}>
                                     <Button type="submit">
