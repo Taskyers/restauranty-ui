@@ -244,6 +244,11 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
             }
         })
 
+        Object.keys(openHours).forEach((item: string, index: number) => {
+            if (list[index] !== undefined)
+                list[index].dayOfWeek = item.toUpperCase()
+        })
+
         return list
     }
 
@@ -299,6 +304,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                 'openHours': formItem.openHours
             }).then(res => {
                 this.setState({...this.state, success: true, message: res.data.message})
+                formItem.id = res.data.object.id
                 this.setState((prevState: { restaurants: any[]; }) => ({
                     restaurants: prevState.restaurants.concat(formItem)
                 }));
