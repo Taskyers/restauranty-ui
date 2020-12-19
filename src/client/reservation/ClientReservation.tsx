@@ -26,7 +26,7 @@ export default class ClientReservation extends React.Component<any, any> {
     }
 
     cancelReservation(id: number): void {
-        this.sendReportRequest(id, `/api/client/reservations/cancel/${id}`);
+        this.sendReservationRequest(id, `/api/client/reservations/cancel/${id}`);
     }
 
     filterReservations(event: { preventDefault: () => void; }, filter: string): void {
@@ -39,7 +39,7 @@ export default class ClientReservation extends React.Component<any, any> {
         });
     }
 
-    sendReportRequest(id: number, url: string): void {
+    sendReservationRequest(id: number, url: string): void {
         axios.put<ResponseMessage<string>>(url).then(result => {
             const reservations = this.state.reservations.filter((reservation: RestaurantReservationDTO) => reservation.id !== id);
 
@@ -80,7 +80,6 @@ export default class ClientReservation extends React.Component<any, any> {
                             <th scope="col">Reservation date</th>
                             <th scope="col">Reservation time</th>
                             <th scope="col"/>
-                            <th scope="col"/>
                         </tr>
                         </thead>
                         <tbody>
@@ -116,7 +115,7 @@ export default class ClientReservation extends React.Component<any, any> {
                                 </tr>
                             )
                         }) : <tr>
-                            <td colSpan={6}>There are no reservations</td>
+                            <td colSpan={7}>There are no reservations</td>
                         </tr>}
                         </tbody>
                     </table>

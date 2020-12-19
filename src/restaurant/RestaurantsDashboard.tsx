@@ -303,7 +303,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                     restaurants: prevState.restaurants.concat(formItem)
                 }));
             }).catch(reason => {
-                this.setState({...this.state, failure: true, message: reason.message})
+                this.setState({...this.state, failure: true, message: reason.response.data.object[0].message})
             });
         }
 
@@ -451,7 +451,7 @@ export default class RestaurantsDashboard extends React.Component<any, any> {
                                         </tr>
                                     )
                                 }) : <tr>
-                                    <td colSpan={7}>There are no restaurants</td>
+                                    <td colSpan={15}>There are no restaurants</td>
                                 </tr>}
                                 </tbody>
                             </table>

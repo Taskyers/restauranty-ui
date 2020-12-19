@@ -158,7 +158,7 @@ export default class ClientIndex extends React.Component<any, any> {
         }).then(res => {
             this.setState({...this.state, success: true, message: res.data.message})
         }).catch(reason => {
-                this.setState({...this.state, failure: true, message: reason.message})
+                this.setState({...this.state, failure: true, message: reason.response.data.object[0].message})
             }
         );
     }
