@@ -7,7 +7,8 @@ import {
 } from "../../utils/validation/registration/RegistrationValidator";
 import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
-import {validateForm} from "../../utils/validation/shared/SharedValidation";
+import { validateForm } from "../../utils/validation/shared/SharedValidation";
+import Header from "../header/Header";
 
 export default class ChangePasswordForm extends React.Component<any, any> {
     constructor(props: any) {
@@ -62,9 +63,10 @@ export default class ChangePasswordForm extends React.Component<any, any> {
     render() {
         return (
             <>
+                <Header/>
                 <Row>
                     <Col>
-                        <div className="index-form">
+                        <div className="index-form registration-form">
                             <h3 className="header-top">Reset password</h3>
                             <Form onSubmit={ this.handleSubmit }>
                                 <Form.Group>

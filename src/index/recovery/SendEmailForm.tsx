@@ -5,6 +5,7 @@ import './SendEmailForm.less';
 import { Button, Col, Form, Row } from "react-bootstrap";
 import ResponseMessage from "../../ResponseMessage";
 import SweetAlert from "react-bootstrap-sweetalert";
+import Header from "../header/Header";
 
 export default class SendEmailForm extends React.Component<any, any> {
     constructor(props: any) {
@@ -34,6 +35,7 @@ export default class SendEmailForm extends React.Component<any, any> {
     render() {
         return (
             <>
+                <Header/>
                 <Row>
                     <Col>
                         <div className="index-form email-form">
